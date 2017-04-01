@@ -9,9 +9,13 @@
 
     <TextView
         android:id="@+id/magnitude_text_view"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:background="@drawable/magnitude_circle"
+        android:layout_gravity="center_vertical"
+        android:gravity="center"
+        android:textSize="16dp"
+        android:textColor="@android:color/white"
         tools:text="5.1"/>
 
     <TextView
@@ -19,7 +23,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        tools:text="“74km NW of"/>
+        android:layout_marginLeft="16dp"
+        tools:text="74km NW of"/>
 
     <TextView
         android:id="@+id/primary_location_text_view"
