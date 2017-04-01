@@ -17,6 +17,8 @@ import java.util.Date;
 
 public class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
 
+    private static final String LOCATION_SEPARATOR = " of ";
+
     public EarthquakeAdapter(Activity context, ArrayList<Earthquake> EarthquakeAdapter) {
         super(context, 0, EarthquakeAdapter);
     }
@@ -37,9 +39,25 @@ public class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
         String mag2 = new Double(mag).toString();
         magTextView.setText(mag2);
 
-        // Set Location
-        TextView placeTextView = (TextView) listItemView.findViewById(R.id.location_text_view);
-        placeTextView.setText(currentValue.getLocation());
+        // Get location String
+        String location = currentValue.getLocation();
+
+        String primaryLocation;
+        String locationOffset;
+
+        if (location.contains(LOCATION_SEPARATOR)) {
+            String[] parts = location.split(LOCATION_SEPARATOR);
+            locationOffset = parts[0] + LOCATION_SEPARATOR;
+            primaryLocation = parts[1];
+        } else {
+            locationOffset = "Near the";
+            primaryLocation = location;
+        }
+
+        TextView offsetTextView = (TextView) listItemView.findViewById(R.id.location_offset_text_view);
+        offsetTextView.setText(locationOffset);
+        TextView locationTextView = (TextView) listItemView.findViewById(R.id.primary_location_text_view);
+        locationTextView.setText(primaryLocation);
 
 
         // Create Date object
