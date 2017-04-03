@@ -27,6 +27,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +44,9 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderCallb
 
     /** URL for earthquake data from the USGS dataset */
     private static final String USGS_REQUEST_URL = "http://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&orderby=time&minmag=5&limit=10";
+
+    /** TextView that is displayed when the list is empty */
+    private TextView mEmptyStateTextView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -77,19 +81,29 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderCallb
         Log.i(LOG_TAG, "Earthquake activity, initLoader called");
         loaderManager.initLoader(EARTHQUAKE_LOADER_ID, null, this);
 
+        mEmptyStateTextView = (TextView) findViewById(R.id.empty_view);
+        earthquakeListView.setEmptyView(mEmptyStateTextView);
+
     }
 
     @Override
     public Loader<List<Earthquake>> onCreateLoader(int i, Bundle bundle) {
-        // Create a new loader for the given URL
+
         Log.i(LOG_TAG, "Earthquake activity, onCreateLoader called");
+
+        // Create a new loader for the given URL
         return new EarthquakeLoader(this, USGS_REQUEST_URL);
     }
 
     @Override
     public void onLoadFinished(Loader<List<Earthquake>> loader, List<Earthquake> earthquakes) {
-        // Clear the adapter of previous earthquake data
+
         Log.i(LOG_TAG, "Earthquake activity, onLoadFinished called");
+
+        // Set empty state text to display "No earthquakes found."
+        mEmptyStateTextView.setText(R.string.no_earthquakes);
+
+        // Clear the adapter of previous earthquake data
         mAdapter.clear();
 
         // If there is a valid list of {@link Earthquake}s, then add them to the adapter's
@@ -101,8 +115,10 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderCallb
 
     @Override
     public void onLoaderReset(Loader<List<Earthquake>> loader) {
-        // Loader reset, so we can clear out our existing data.
+
         Log.i(LOG_TAG, "Earthquake activity, onLoaderReset called");
+
+        // Loader reset, so we can clear out our existing data.
         mAdapter.clear();
     }
 }
